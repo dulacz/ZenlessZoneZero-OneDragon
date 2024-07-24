@@ -1,9 +1,12 @@
+import time
+
 from typing import Callable, List
 
 from enum import Enum
 
 from one_dragon.base.config.config_item import ConfigItem
 from one_dragon.base.controller.pc_button import pc_button_utils
+from one_dragon.base.controller.pc_button.pc_button_controller import PcButtonController
 
 
 class XboxButtonEnum(Enum):
@@ -18,9 +21,10 @@ class XboxButtonEnum(Enum):
     RB = ConfigItem('RB', 'xbox_7')
 
 
-class XboxButtonController:
+class XboxButtonController(PcButtonController):
 
     def __init__(self):
+        PcButtonController.__init__(self)
         self.pad = None
         if pc_button_utils.is_vgamepad_installed():
             import vgamepad as vg
@@ -47,26 +51,28 @@ class XboxButtonController:
         self.handler[int(key[-1])]()
 
     def tap_a(self) -> None:
-        self.pad.press_button(self._btn.XUSB_GAMEPAD_A)
+        self._tap_button(self._btn.XUSB_GAMEPAD_A)
 
     def tap_b(self) -> None:
-        self.pad.press_button(self._btn.XUSB_GAMEPAD_B)
+        self._tap_button(self._btn.XUSB_GAMEPAD_B)
 
     def tap_x(self) -> None:
-        self.pad.press_button(self._btn.XUSB_GAMEPAD_X)
+        self._tap_button(self._btn.XUSB_GAMEPAD_X)
 
     def tap_y(self) -> None:
-        self.pad.press_button(self._btn.XUSB_GAMEPAD_Y)
+        self._tap_button(self._btn.XUSB_GAMEPAD_Y)
 
     def tap_lt(self) -> None:
         self.pad.left_trigger(value=255)
         self.pad.update()
+        time.sleep(self.key_press_time)
         self.pad.left_trigger(value=0)
         self.pad.update()
 
     def tap_rt(self) -> None:
         self.pad.right_trigger(value=255)
         self.pad.update()
+        time.sleep(self.key_press_time)
         self.pad.right_trigger(value=0)
         self.pad.update()
 
@@ -79,5 +85,10 @@ class XboxButtonController:
     def _tap_button(self, btn):
         self.pad.press_button(btn)
         self.pad.update()
+        time.sleep(self.key_press_time)
         self.pad.release_button(btn)
+        self.pad.update()
+
+    def reset(self):
+        self.pad.reset()
         self.pad.update()
