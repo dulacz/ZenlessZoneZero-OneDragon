@@ -6,7 +6,7 @@ from one_dragon.base.conditional_operation.conditional_operator import Condition
 from one_dragon.base.controller.pc_button import pc_button_utils
 from one_dragon.base.operation.operation import OperationNode, OperationRoundResult
 from one_dragon.utils.i18_utils import gt
-from zzz_od.application.battle_assistant.dodge_assitant_config import get_dodge_op_by_name
+from zzz_od.application.battle_assistant.auto_battle_config import get_auto_battle_op_by_name
 from zzz_od.application.zzz_application import ZApplication
 from zzz_od.auto_battle.auto_battle_operator import AutoBattleOperator
 from zzz_od.config.game_config import GamepadTypeEnum
@@ -34,11 +34,8 @@ class AutoBattleApp(ZApplication):
         """
         check_gamepad = OperationNode('手柄检测', self.check_gamepad)
 
-        load_model = OperationNode('加载判断模型', self.load_model)
-        self.add_edge(check_gamepad, load_model)
-
         load_op = OperationNode('加载自动战斗指令', self.load_op)
-        self.add_edge(load_model, load_op)
+        self.add_edge(check_gamepad, load_op)
 
         init_context = OperationNode('初始化上下文', self.init_context)
         self.add_edge(load_op, init_context)
@@ -87,7 +84,7 @@ class AutoBattleApp(ZApplication):
         """
         if self.auto_op is not None:  # 如果有上一个 先销毁
             self.auto_op.dispose()
-        config = get_dodge_op_by_name(self.ctx.battle_assistant_config.auto_battle_config)
+        config = get_auto_battle_op_by_name(self.ctx.battle_assistant_config.auto_battle_config)
         if config is None:
             return self.round_fail('无效的自动战斗指令 请重新选择')
         self.auto_op = AutoBattleOperator(self.ctx, 'auto_battle', config.module_name)
@@ -114,8 +111,8 @@ class AutoBattleApp(ZApplication):
         now = time.time()
 
         screen = self.screenshot()
-        self.ctx.yolo.check_screen_async(screen, now)
-        self.ctx.battle.check_screen_async(screen, now)
+        self.ctx.yolo.check_screen(screen, now)
+        self.ctx.battle.check_screen(screen, now)
 
         return self.round_wait(wait_round_time=self.ctx.battle_assistant_config.screenshot_interval)
 
