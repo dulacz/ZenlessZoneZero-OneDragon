@@ -5,7 +5,7 @@ allow_ultimate:
 scenes:
 
 - triggers: ["闪避识别-黄光", "闪避识别-红光"]
-  interval: 0.5
+  interval: 1.2
   handlers:
   - states: "[闪避识别-黄光, 0, 0.5]"
     operations:
@@ -35,14 +35,14 @@ scenes:
       - state_template: "连携模板-跳过"
 
 - triggers: ["前台-击破"]
-  interval: 0.7
+  interval: 1
   handlers:
-  - state_template: "击破速切模板-全角色"
+  - state_template: "速切模板-全角色"
 
 - triggers: ["前台-支援"]
-  interval: 0.7
+  interval: 1
   handlers:
-  - state_template: "支援速切模板-全角色"
+  - state_template: "速切模板-全角色"
 
 - triggers: []
   interval: 0.35
