@@ -53,7 +53,7 @@ class CombatSimulation(ZOperation):
         self.node_max_retry_times = 60  # 一开始等待加载要久一点
         screen = self.screenshot()
         return self.round_by_find_area(
-            screen, '实战模拟室', '挑战奖励',
+            screen, '实战模拟室', '挑战等级',
             success_wait=1, retry_wait=1
         )
 
