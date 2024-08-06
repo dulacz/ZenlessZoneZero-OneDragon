@@ -1,13 +1,13 @@
 from PySide6.QtCore import Signal
 from PySide6.QtWidgets import QWidget
-from qfluentwidgets import PrimaryPushButton, PushButton, FluentIcon, ComboBox, CaptionLabel, LineEdit, ToolButton
+from qfluentwidgets import PrimaryPushButton, FluentIcon, ComboBox, CaptionLabel, LineEdit, ToolButton
 from typing import Optional
 
 from one_dragon.gui.component.column_widget import ColumnWidget
 from one_dragon.gui.component.interface.vertical_scroll_interface import VerticalScrollInterface
 from one_dragon.gui.component.setting_card.multi_push_setting_card import MultiPushSettingCard
 from zzz_od.application.battle_assistant.auto_battle_config import get_auto_battle_op_config_list
-from zzz_od.config.charge_plan_config import ChargePlanItem
+from zzz_od.application.charge_plan.charge_plan_config import ChargePlanItem
 from zzz_od.context.zzz_context import ZContext
 
 
@@ -145,7 +145,7 @@ class ChargePlanCard(MultiPushSettingCard):
         target_text: Optional[str] = None
         for config in config_list:
             self.auto_battle_combo_box.addItem(text=config.ui_text, userData=config.value)
-            if config.value == self.plan.mission_name:
+            if config.value == self.plan.auto_battle_config:
                 target_text = config.ui_text
 
         if target_text is None:
