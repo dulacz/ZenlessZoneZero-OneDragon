@@ -13,19 +13,19 @@ from zzz_od.operation.hollow_zero.event import event_utils
 from zzz_od.operation.zzz_operation import ZOperation
 
 
-class ResoniumStore(ZOperation):
+class BambooMerchant(ZOperation):
 
     NOT_TO_BUY: ClassVar[str] = '不购买'
 
     def __init__(self, ctx: ZContext):
         """
-        在商店的画面了 尽量购买
+        在邦布商人的画面了 尽量购买
         :param ctx:
         """
         ZOperation.__init__(
             self, ctx,
             node_max_retry_times=5,
-            op_name=gt('鸣徽商店')
+            op_name=gt('邦布商人')
         )
 
     @operation_node(name='鸣徽交易', is_start_node=True)
@@ -70,7 +70,7 @@ class ResoniumStore(ZOperation):
 
             return self.round_success()
 
-        return self.round_success(ResoniumStore.NOT_TO_BUY, wait=1)
+        return self.round_success(BambooMerchant.NOT_TO_BUY, wait=1)
 
     @node_from(from_name='选择鸣徽')
     @operation_node(name='购买后确定')
