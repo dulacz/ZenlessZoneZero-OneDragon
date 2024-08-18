@@ -9,6 +9,7 @@ from cv2.typing import MatLike
 from one_dragon.utils import os_utils
 from one_dragon.utils.log_utils import log
 from one_dragon.utils.performance_recorder import record_performance
+from zzz_od.config.yolo_config import ZZZ_MODEL_DOWNLOAD_URL
 from zzz_od.yolo import onnx_utils
 from zzz_od.yolo.onnx_model_loader import OnnxModelLoader
 
@@ -53,13 +54,13 @@ class ClassificationResult:
         self.class_idx: int = class_idx  # 分类的下标 -1代表无法识别（不满足阈值）
 
 
-class DodgeClassifier(OnnxModelLoader):
+class FlashClassifier(OnnxModelLoader):
 
     def __init__(self,
                  model_name: str = 'yolov8n-640-dodge-0718',
                  model_parent_dir_path: Optional[str] = os.path.abspath(__file__),  # 默认使用本文件的目录
                  gh_proxy: bool = True,
-                 personal_proxy: Optional[str] = '',
+                 personal_proxy: Optional[str] = None,
                  gpu: bool = False,
                  keep_result_seconds: float = 2
                  ):
@@ -72,7 +73,7 @@ class DodgeClassifier(OnnxModelLoader):
         OnnxModelLoader.__init__(
             self,
             model_name=model_name,
-            model_download_url='',
+            model_download_url=ZZZ_MODEL_DOWNLOAD_URL,
             model_parent_dir_path=model_parent_dir_path,
             gh_proxy=gh_proxy,
             personal_proxy=personal_proxy,
@@ -174,5 +175,5 @@ def get_switch_red_mask(image: MatLike) -> MatLike:
 
 
 if __name__ == '__main__':
-    DodgeClassifier(model_parent_dir_path=os_utils.get_path_under_work_dir('assets', 'models', 'yolo'),
+    FlashClassifier(model_parent_dir_path=os_utils.get_path_under_work_dir('assets', 'models', 'yolo'),
                     gpu=True)
