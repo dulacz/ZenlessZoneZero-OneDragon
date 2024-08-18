@@ -45,6 +45,5 @@ class DropResonium(ZOperation):
     def choose_default(self):
         screen = self.screenshot()
         area = self.ctx.screen_loader.get_area('零号空洞-事件', '底部-选择列表')
-        return self.round_by_ocr_and_click(screen, '催化', area=area,
-                                           success_wait=1, retry_wait=1,
-                                           color_range=[(240, 240, 240), (255, 255, 255)])
+        return self.round_by_ocr_and_click(screen, '丢弃', area=area,
+                                           success_wait=1, retry_wait=1)
