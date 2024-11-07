@@ -5,19 +5,19 @@ from qfluentwidgets import NavigationItemPosition, SplashScreen
 from typing import Optional
 
 from one_dragon.base.operation.one_dragon_env_context import OneDragonEnvContext
-from one_dragon.gui.app.one_dragon_window import OneDragonWindow
-from one_dragon.gui.common.od_style_sheet import OniStyleSheet
+from phosdeiz.gui.windows import PhosWindow
+from phosdeiz.gui.services import PhosStyleSheet
 from one_dragon.gui.component.interface.base_interface import BaseInterface
 from one_dragon.utils import os_utils
+from one_dragon.envs.project_config import ProjectConfig
 
-
-class InstallerWindowBase(OneDragonWindow):
+class InstallerWindowBase(PhosWindow):
     """ Main Interface """
 
     def __init__(self, ctx: OneDragonEnvContext,
                  win_title: str,
                  app_icon: Optional[str] = None, parent=None):
-        OneDragonWindow.__init__(self, project_config=ctx.project_config, parent=parent)
+        PhosWindow.__init__(self, project_config=ctx.project_config, parent=parent)
         self.ctx: OneDragonEnvContext = ctx
         self._last_stack_idx: int = 0
 
@@ -26,7 +26,7 @@ class InstallerWindowBase(OneDragonWindow):
         if app_icon is not None:
             app_icon_path = os.path.join(os_utils.get_path_under_work_dir('assets', 'ui'), app_icon)
             self.setWindowIcon(QIcon(app_icon_path))
-
+        
         # 初始化窗口
         self.init_window()
 
@@ -76,7 +76,7 @@ class InstallerWindowBase(OneDragonWindow):
         self.move(100, 100)
 
         # 设置配置ID
-        self.setObjectName("OneDragonWindow")
+        self.setObjectName("PhosWindow")
         self.navigationInterface.setObjectName("NavigationInterface")
         self.stackedWidget.setObjectName("StackedWidget")
         self.titleBar.setObjectName("TitleBar")    
@@ -87,7 +87,10 @@ class InstallerWindowBase(OneDragonWindow):
         self.navigationInterface.setContentsMargins(0, 28, 0, 0)
 
         # 配置样式
-        OniStyleSheet.APP_WINDOW.apply(self)
-        OniStyleSheet.NAVIGATION_INTERFACE.apply(self.navigationInterface)
-        OniStyleSheet.STACKED_WIDGET.apply(self.stackedWidget)
-        OniStyleSheet.TITLE_BAR.apply(self.titleBar)
+        PhosStyleSheet.APP_WINDOW.apply(self)
+        PhosStyleSheet.NAVIGATION_INTERFACE.apply(self.navigationInterface)
+        PhosStyleSheet.STACKED_WIDGET.apply(self.stackedWidget)
+        PhosStyleSheet.TITLE_BAR.apply(self.titleBar)
+
+        # 设置参数
+        self.titleBar.issue_url = f"{ProjectConfig.github_homepage}/issues"
