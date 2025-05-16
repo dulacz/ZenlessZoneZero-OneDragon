@@ -33,6 +33,7 @@ class GitInstallCard(WithExistedInstallCard):
         :return:
         """
         self.ctx.env_config.git_path = file_path
+        self.check_and_update_display()
         super().on_existed_chosen(file_path)
 
     def after_progress_done(self, success: bool, msg: str) -> None:
